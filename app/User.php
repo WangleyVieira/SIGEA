@@ -62,4 +62,17 @@ class User extends Authenticatable
     {
         return $this->id_perfil == Perfil::USUARIO_EXTERNO;
     }
+
+    public static retornaAtividadesUsuarioLogado() {
+        return Atividade::where('ativo', '=', Atividade::ATIVO)
+            ->where('cadastradoPorUsuario', '=', auth()->user()->id)
+            ->get();
+    }
+
+    public static retornaAtividadesExternas() {
+        return Atividade::where('ativo', '=', Atividade::ATIVO)
+            ->where('cadastradoPorUsuario', '!=', auth()->user()->id)
+            ->get();
+    }
+
 }

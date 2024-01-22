@@ -23,8 +23,9 @@ class AtividadeController extends Controller
     public function index()
     {
         try {
-            $atividadesExternas = Atividade::where('ativo', '=', Atividade::ATIVO)->where('cadastradoPorUsuario', '!=', auth()->user()->id)->get();
-            $minhasAtividades = Atividade::where('ativo', '=', Atividade::ATIVO)->where('cadastradoPorUsuario', '=', auth()->user()->id)->get();
+            $atividadesExternas = User::retornaAtividadesExternas();
+            // quando for pegar atividades do usuario logado, usar metodo, centraliza logica e evita duplicação 
+            $minhasAtividades = User::retornaAtividadesUsuarioLogado();
 
             return view('adm.atividade.index', compact('atividadesExternas', 'minhasAtividades'));
 
@@ -42,8 +43,8 @@ class AtividadeController extends Controller
     public function create()
     {
         try {
-
-            $questoes = Questao::where('ativo', '=', Questao::ATIVO)->get();
+            // toda vez que for pegar as questoes ativas, usa esse metodo, pra não duplicar logica    
+            $questoes = Questao::retornaQuestoesAtivas();
             $disciplinas = Disciplina::where('ativo', '=', Disciplina::ATIVO)->get();
 
             return view('adm.atividade.create', compact('disciplinas', 'questoes'));

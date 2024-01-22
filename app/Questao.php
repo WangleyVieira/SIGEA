@@ -83,4 +83,8 @@ class Questao extends Model implements Auditable
         }
         return false;
     }
+
+    public static retornaQuestoesAtivas() {
+        return Questao::where('ativo', '=', Questao::ATIVO)->get();
+    }
 }
